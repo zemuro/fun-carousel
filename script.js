@@ -34,13 +34,39 @@ if (!data || Object.keys(data).length === 0) {
 
 let currentCategory = null;
 
-// ЗВУКОВОЙ ДВИЖОК (Web Audio API)
+// ЗВУКОВОЙ ДВИЖОК (Web Audio API) - ОПТИМИЗИРОВАН ДЛЯ МГНОВЕННОГО СТАРТА
 const AudioFX = {
     ctx: null,
-    init() { if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)(); },
+    init() { 
+        if (!this.ctx) {
+            this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+            // Сразу вешаем слушатель на первый клик по документу, чтобы "разбудить" контекст
+            const resumeAudio = () => {
+                if (this.ctx.state === 'suspended') {
+                    this.ctx.resume().then(() => {
+                        // ПРОГРЕВ: Проигрываем тихий звук, чтобы полностью "пробить" звуковой тракт
+                        const osc = this.ctx.createOscillator();
+                        const gain = this.ctx.createGain();
+                        gain.gain.setValueAtTime(0, this.ctx.currentTime);
+                        osc.connect(gain);
+                        gain.connect(this.ctx.destination);
+                        osc.start(0);
+                        osc.stop(this.ctx.currentTime + 0.001);
+                    });
+                }
+                // Удаляем слушатель после первого взаимодействия
+                document.removeEventListener('click', resumeAudio);
+                document.removeEventListener('touchstart', resumeAudio);
+            };
+            document.addEventListener('click', resumeAudio);
+            document.addEventListener('touchstart', resumeAudio);
+        }
+    },
     
     playClick() {
         this.init();
+        if (this.ctx.state === 'suspended') this.ctx.resume(); // На всякий случай
+        
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = 'square';
@@ -53,7 +79,7 @@ const AudioFX = {
     },
 
     playTick() {
-        this.init();
+        if (!this.ctx) this.init();
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = 'sine';
@@ -65,7 +91,7 @@ const AudioFX = {
     },
 
     playWin() {
-        this.init();
+        if (!this.ctx) this.init();
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = 'triangle';
@@ -77,6 +103,9 @@ const AudioFX = {
         osc.start(); osc.stop(this.ctx.currentTime + 0.5);
     }
 };
+
+// Инициализируем звуковой движок сразу (он будет в suspended)
+AudioFX.init();
 
 // Цвета
 // Цвета в стиле Neon Cyber (приглушенные основные, яркие неоновые акценты)
