@@ -10,77 +10,225 @@
     --secondary: #00d4ff;
     --accent: #ffcc00;
     --bg-dark: #070b14;
+    --metal: #0f1217;
     --glass: rgba(255, 255, 255, 0.05);
     --glass-border: rgba(255, 255, 255, 0.1);
     --text: #ffffff;
 }
 
+/* Скрываем скроллбар */
+::-webkit-scrollbar { width: 0; background: transparent; }
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 html, body {
     width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
+    min-height: 100vh;
     background: #000;
-    position: relative; /* Создаем точку отсчета */
 }
 
 body {
     font-family: 'Outfit', sans-serif;
     color: white;
     line-height: 1.6;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 #star-tunnel {
-    position: absolute; /* Меняем fixed на absolute для привязки к body */
+    position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    z-index: -2;
+    z-index: 1;
 }
 
+/* НЕОНОВАЯ ДЫМКА */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(
+        circle at center,
+        transparent 0%,
+        rgba(0, 150, 255, 0.05) 50%,
+        rgba(0, 212, 255, 0.15) 100%
+    );
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* КОКПИТ (ТОЛЬКО ДЛЯ ИГРЫ) */
 .cockpit-window {
-    position: absolute; /* Теперь он точно в рамках body */
-    top: 10px; left: 10px; right: 10px; bottom: 10px; /* Отступаем на 10px от краев ВЕЗДЕ */
+    position: fixed;
+    top: 5vh; left: 5vh; right: 5vh; bottom: 4vh;
     pointer-events: none;
     z-index: 1000;
-    /* Черная рама */
-    border: 5vh solid #000;
-    box-shadow: 0 0 0 20px #000; /* Доп. защита черным цветом */
+    border-radius: 80px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 0 100vmax var(--metal);
+    outline: 1px solid rgba(0, 212, 255, 0.4);
+    transition: all 0.3s ease;
 }
 
 .cockpit-window::after {
     content: "Руслан Мазавин, 2026";
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    border: 2px solid rgba(0, 212, 255, 0.5);
-    border-radius: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    padding-bottom: 2vh;
-    color: rgba(0, 212, 255, 0.7);
+    position: fixed;
+    bottom: 1.2vh;
+    left: 50%;
+    transform: translateX(-50%);
+    color: rgba(255, 255, 255, 0.18);
     font-family: 'SciFiLocal', sans-serif;
-    font-size: 0.75rem;
-    letter-spacing: 2px;
-    text-shadow: 0 0 10px rgba(0, 212, 255, 0.6);
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    z-index: 3000;
+    pointer-events: none;
 }
 
+/* КОНТЕЙНЕРЫ */
 .game-container {
     position: relative;
-    z-index: 10;
+    z-index: 500;
     width: 100%;
-    height: 100%;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    padding: 15vh;
+    padding: 12vh 10vw;
 }
 
+/* СТИЛИ АДМИНКИ */
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    position: relative;
+    z-index: 100;
+}
+
+.container h1 {
+    font-family: 'SciFiLocal', sans-serif;
+    font-size: 2.5rem;
+    margin: 20px 0 40px;
+    background: linear-gradient(to bottom, #fff, var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.back-link {
+    color: var(--secondary);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.back-link:hover { text-shadow: 0 0 10px var(--secondary); }
+
+.glass {
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 30px;
+    padding: 30px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+.admin-controls {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.category-manager h4, .item-manager h4 {
+    color: var(--secondary);
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+input[type="text"], select {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 10px 15px;
+    color: white;
+    font-family: inherit;
+    flex: 1;
+}
+
+button:not(.spin-btn-large) {
+    background: var(--secondary);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 10px 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+button:not(.spin-btn-large):hover { background: #008fb3; transform: translateY(-2px); }
+
+.danger-btn {
+    background: rgba(255, 68, 68, 0.1) !important;
+    color: #ff4444 !important;
+    border: 1px solid #ff4444 !important;
+    width: 100%;
+}
+.danger-btn:hover { background: rgba(255, 68, 68, 0.2) !important; }
+
+.data-list {
+    margin-top: 30px;
+}
+
+.category-item {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.category-header h3 { color: var(--accent); }
+
+.item-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.item-tag {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.delete-item {
+    color: #ff4444;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* СТИЛИ ИГРЫ */
 .game-header h1 {
     font-family: 'SciFiLocal', sans-serif;
     font-size: 5rem;
@@ -88,7 +236,7 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-transform: uppercase;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     filter: drop-shadow(0 0 15px rgba(0, 212, 255, 0.9));
     letter-spacing: 4px;
     text-align: center;
@@ -109,7 +257,6 @@ body {
     padding: 30px;
     text-align: center;
     min-width: 450px;
-    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     box-shadow: 0 20px 50px rgba(0,0,0,0.5),
                 inset 0 0 20px rgba(255,255,255,0.05);
 }
@@ -186,13 +333,12 @@ body {
     min-height: 3rem;
 }
 
-/* Настройки */
 .settings-icon {
     position: fixed;
     top: 40px; right: 40px;
     font-size: 2rem;
     text-decoration: none;
-    z-index: 2000;
+    z-index: 3000;
     opacity: 0.5;
     transition: 0.3s;
 }
@@ -200,21 +346,26 @@ body {
 
 /* АДАПТИВНОСТЬ */
 @media (max-width: 1300px) {
+    .cockpit-window { top: 2vh; left: 2vh; right: 2vh; bottom: 4vh; border-radius: 40px; }
+    .game-container { padding: 6vh 5vw; }
+    .game-header h1 { font-size: 3rem; margin-bottom: 20px; }
     .wheel-display { flex-direction: column; align-items: center; gap: 30px; }
-    .game-container { padding: 15vh; overflow-y: auto; }
-    .game-header h1 { font-size: 3.5rem; }
-    .wheel-card { min-width: 90vw; }
+    .wheel-card { min-width: 80vw; padding: 20px; border-radius: 30px; }
+    .wheel-wrapper-large { width: 300px; height: 300px; border-width: 6px; }
+    
+    .admin-controls { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 600px) {
-    .cockpit-window { border-width: 3vh; top: 5px; left: 5px; right: 5px; bottom: 5px; }
-    .game-header h1 { font-size: 2.2rem !important; }
-    .wheel-wrapper-large { width: 280px; height: 280px; }
+    .cockpit-window { top: 1vh; left: 1vh; right: 1vh; bottom: 3vh; border-radius: 20px; }
+    .cockpit-window::after { bottom: 0.7vh; font-size: 0.55rem; letter-spacing: 2px; }
+    
+    .game-container { padding: 4vh 2vw; }
+    .game-header h1 { font-size: 1.8rem !important; margin-bottom: 15px; }
+    .wheel-wrapper-large { width: 240px; height: 240px; border-width: 4px; margin-bottom: 15px; }
+    .wheel-card { min-width: 80vw; padding: 15px 10px; border-radius: 20px; }
+    .spin-btn-large { padding: 10px 30px; font-size: 1.2rem; }
+    
+    .container h1 { font-size: 1.8rem; }
+    .glass { padding: 15px; }
 }
-
-/* Стили для кнопок в админке */
-.action-btn { background: var(--secondary); color: white; border: none; border-radius: 12px; padding: 12px 20px; font-weight: bold; cursor: pointer; transition: 0.3s; flex: 1; margin: 5px; }
-.action-btn:hover { background: #008fb3; transform: translateY(-2px); }
-
-.danger-btn { background: rgba(255, 68, 68, 0.2); color: #ff4444; border: 1px solid #ff4444; border-radius: 12px; padding: 12px 20px; font-weight: bold; cursor: pointer; transition: 0.3s; width: 100%; margin: 5px; }
-.danger-btn:hover { background: rgba(255, 68, 68, 0.4); transform: translateY(-2px); }

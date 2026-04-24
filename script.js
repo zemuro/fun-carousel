@@ -268,14 +268,17 @@ if (document.getElementById('data-list')) {
             select.appendChild(opt);
             
             const group = document.createElement('div');
-            group.className = 'category-group';
+            group.className = 'category-item';
             group.innerHTML = `
                 <div class="category-header">
-                    <span>${cat}</span>
-                    <span class="delete-btn" onclick="deleteCategory('${cat}')">Удалить</span>
+                    <h3>${cat}</h3>
+                    <button class="danger-btn" style="width:auto; padding: 5px 15px;" onclick="deleteCategory('${cat}')">Удалить</button>
                 </div>
-                <div class="items-list">${(data[cat] || []).map(item => `
-                    <span class="item-chip">${item} <span class="delete-btn" onclick="deleteItem('${cat}', '${item}')">×</span></span>
+                <div class="item-list">${(data[cat] || []).map(item => `
+                    <div class="item-tag">
+                        <span>${item}</span>
+                        <span class="delete-item" onclick="deleteItem('${cat}', '${item}')">×</span>
+                    </div>
                 `).join('')}</div>
             `;
             dataList.appendChild(group);
