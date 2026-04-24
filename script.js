@@ -186,7 +186,11 @@ function drawWheel(canvas, labels) {
     });
 }
 
-function spin(canvas, labels, onComplete) {
+// Переменные для защиты от повторов
+let lastCategoryResult = null;
+let lastItemResult = null;
+
+function spin(canvas, labels, onComplete, lastResult = null) {
     let rotation = 0;
     let speed = Math.random() * 0.25 + 0.35;
     const friction = 0.988;
@@ -198,7 +202,6 @@ function spin(canvas, labels, onComplete) {
         speed *= friction;
         canvas.style.transform = `rotate(${rotation}rad)`;
         
-        // Логика щелчков (определяем текущий сектор под стрелкой)
         const actualRotation = rotation % (Math.PI * 2);
         const currentSector = Math.floor((Math.PI * 2 - actualRotation - Math.PI/2) / sliceAngle) % labels.length;
         
@@ -211,8 +214,34 @@ function spin(canvas, labels, onComplete) {
             requestAnimationFrame(animate);
         } else {
             const index = Math.floor((Math.PI * 2 - actualRotation - Math.PI/2) / sliceAngle) % labels.length;
-            const finalIndex = index < 0 ? index + labels.length : index;
-            onComplete(labels[finalIndex]);
+            let finalIndex = index < 0 ? index + labels.length : index;
+            let result = labels[finalIndex];
+
+            // ЗАЩИТА ОТ ПОВТОРА: Если выпало то же самое, и есть больше одного варианта
+            if (result === lastResult && labels.length > 1) {
+                // Плавный "докрут" на один сектор
+                let nudgeSpeed = 0.05;
+                const nudgeTarget = rotation + sliceAngle;
+                
+                function nudge() {
+                    rotation += nudgeSpeed;
+                    nudgeSpeed *= 0.96;
+                    canvas.style.transform = `rotate(${rotation}rad)`;
+                    
+                    if (rotation < nudgeTarget && nudgeSpeed > 0.001) {
+                        requestAnimationFrame(nudge);
+                    } else {
+                        // После докрута берем новый индекс
+                        const newActualRotation = rotation % (Math.PI * 2);
+                        const newIndex = Math.floor((Math.PI * 2 - newActualRotation - Math.PI/2) / sliceAngle) % labels.length;
+                        const correctedIndex = newIndex < 0 ? newIndex + labels.length : newIndex;
+                        onComplete(labels[correctedIndex]);
+                    }
+                }
+                nudge();
+            } else {
+                onComplete(result);
+            }
         }
     }
     animate();
@@ -241,6 +270,7 @@ function init() {
         catResult.innerText = "КРУТИМ...";
         
         spin(catWheel, Object.keys(data), (result) => {
+            lastCategoryResult = result; // Запоминаем для будущего
             currentCategory = result;
             catResult.innerText = result;
             spinCatBtn.disabled = false;
@@ -253,7 +283,7 @@ function init() {
             
             AudioFX.playWin();
             confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-        });
+        }, lastCategoryResult);
     };
 
     spinItemBtn.onclick = () => {
@@ -262,12 +292,13 @@ function init() {
         itemResult.innerText = "ВЫБИРАЕМ...";
         
         spin(itemWheel, data[currentCategory], (result) => {
+            lastItemResult = result; // Запоминаем
             itemResult.innerText = result;
             spinItemBtn.disabled = false;
-            itemCard.classList.remove('active-focus'); // Убираем зум после остановки
+            itemCard.classList.remove('active-focus');
             AudioFX.playWin();
             confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
-        });
+        }, lastItemResult);
     };
     
     const drawAll = () => {
