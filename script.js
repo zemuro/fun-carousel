@@ -378,3 +378,34 @@ if (tunnelCanvas) {
 }
 
 init();
+// ФУНКЦИИ ИМПОРТА И ЭКСПОРТА
+function exportData() {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(data, null, 2));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute("href", dataStr);
+    downloadAnchorNode.setAttribute("download", "carousel_backup.json");
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+}
+
+function importData(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            const importedData = JSON.parse(e.target.result);
+            if (confirm("Вы уверены? Это заменит все текущие занятия.")) {
+                data = importedData;
+                saveData();
+                renderAdmin();
+                alert("Данные успешно загружены!");
+            }
+        } catch (err) {
+            alert("Ошибка при чтении файла! Проверьте формат.");
+        }
+    };
+    reader.readAsText(file);
+}

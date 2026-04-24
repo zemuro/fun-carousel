@@ -23,6 +23,16 @@
         <section class="admin-panel glass">
             <div class="admin-controls">
                 <div class="category-manager">
+                    <h4>Инструменты</h4>
+                    <div class="input-group">
+                        <button onclick="exportData()" class="action-btn">💾 Сохранить в файл</button>
+                        <button onclick="document.getElementById('importFile').click()" class="action-btn">📂 Загрузить из файла</button>
+                        <input type="file" id="importFile" style="display:none" onchange="importData(event)">
+                    </div>
+                    <div class="input-group">
+                        <button onclick="resetToDefault()" class="danger-btn">🔄 Восстановить стандартные категории</button>
+                    </div>
+
                     <h4>Новая категория</h4>
                     <div class="input-group">
                         <input type="text" id="new-category-name" placeholder="Название...">
@@ -43,6 +53,10 @@
             </div>
         </section>
     </main>
+
+    <footer class="app-footer">
+        <p>Руслан Мазавин, 2026</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
