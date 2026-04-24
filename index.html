@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <title>Карусель занятий</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&family=Orbitron:wght@400;900&family=Michroma&display=swap" rel="stylesheet">
+</head>
+<body class="main-page">
+    <canvas id="star-tunnel"></canvas>
+    <div class="cockpit-window"></div>
+    
+    <a href="admin.html" class="settings-icon" title="Настройки">⚙️</a>
+
+    <main class="game-container">
+        <header class="game-header">
+            <h1>Карусель занятий</h1>
+        </header>
+
+        <section class="wheel-display">
+            <div class="wheel-card" id="cat-card">
+                <div class="wheel-header">
+                    <span class="step-num">1</span>
+                    <h2>Выбери Категорию</h2>
+                </div>
+                <div class="wheel-wrapper-large">
+                    <canvas id="category-wheel" width="500" height="500"></canvas>
+                    <div class="pointer-large"></div>
+                </div>
+                <button id="spin-category" class="spin-btn-large">ПОЕХАЛИ!</button>
+                <div id="category-result" class="result-text-large"></div>
+            </div>
+
+            <div class="wheel-card disabled" id="item-card">
+                <div class="wheel-header">
+                    <span class="step-num">2</span>
+                    <h2>Твой Выбор</h2>
+                </div>
+                <div class="wheel-wrapper-large">
+                    <canvas id="item-wheel" width="500" height="500"></canvas>
+                    <div class="pointer-large"></div>
+                </div>
+                <button id="spin-item" class="spin-btn-large" disabled>КРУТИТЬ!</button>
+                <div id="item-result" class="result-text-large"></div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</body>
+</html>

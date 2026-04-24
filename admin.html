@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <title>Настройки - Карусель занятий</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-animation"></div>
+    
+    <main class="container">
+        <header>
+            <div style="display:flex; justify-content: space-between; align-items: center;">
+                <a href="index.html" class="back-link">← Назад к карусели</a>
+                <button onclick="resetToDefault()" style="background: rgba(255,255,255,0.1); color: #fff; font-size: 0.8rem;">Сбросить всё</button>
+            </div>
+            <h1>Управление занятиями</h1>
+        </header>
+
+        <section class="admin-panel glass">
+            <div class="admin-controls">
+                <div class="category-manager">
+                    <h4>Новая категория</h4>
+                    <div class="input-group">
+                        <input type="text" id="new-category-name" placeholder="Название...">
+                        <button id="add-category-btn">Создать</button>
+                    </div>
+                </div>
+                <div class="item-manager">
+                    <h4>Добавить в категорию</h4>
+                    <div class="input-group">
+                        <select id="category-select"></select>
+                        <input type="text" id="new-item-name" placeholder="Название...">
+                        <button id="add-item-btn">Ок</button>
+                    </div>
+                </div>
+            </div>
+            <div id="data-list" class="data-list">
+                <!-- Список категорий -->
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

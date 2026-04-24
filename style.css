@@ -1,0 +1,278 @@
+@font-face {
+    font-family: 'SciFiLocal';
+    src: url('fonts/russoone.ttf') format('truetype');
+    font-weight: 400;
+    font-display: block;
+}
+
+:root {
+    --primary: #ff007a;
+    --secondary: #00d4ff;
+    --accent: #ffcc00;
+    --bg-dark: #070b14;
+    --glass: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --text: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Outfit', sans-serif;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    justify-content: center;
+}
+
+#star-tunnel {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -2;
+    background: #000;
+}
+
+.cockpit-window {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* Сплошная черная рама с закруглением */
+.cockpit-window::before {
+    content: "";
+    position: absolute;
+    top: 5vh; left: 5vh; 
+    right: 5vh; bottom: 5vh;
+    border-radius: 80px;
+    /* Гигантская тень вовне закрывает всё лишнее */
+    box-shadow: 0 0 0 100vmax #020508;
+    z-index: -1;
+}
+
+/* Тонкая светящаяся линия (точно по контуру) */
+.cockpit-window::after {
+    content: "";
+    position: absolute;
+    top: 5vh; left: 5vh; 
+    right: 5vh; bottom: 5vh;
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    border-radius: 80px;
+    box-sizing: border-box;
+}
+
+/* Main Page specific */
+.game-container {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 10;
+}
+
+.game-header {
+    position: relative;
+    z-index: 100;
+}
+
+.game-header h1 {
+    font-family: 'SciFiLocal', sans-serif;
+    font-size: 6rem;
+    background: linear-gradient(to bottom, #fff 30%, var(--secondary) 70%, var(--primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+    filter: drop-shadow(0 0 15px rgba(0, 212, 255, 0.9));
+    letter-spacing: 4px;
+}
+
+.wheel-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    width: 100%;
+    perspective: 1000px;
+}
+
+.wheel-card {
+    background: var(--glass);
+    padding: 30px;
+    border-radius: 40px;
+    border: 1px solid var(--glass-border);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    flex-shrink: 0;
+    min-width: 450px;
+}
+
+.wheel-card.disabled {
+    opacity: 0.2;
+    transform: scale(0.8) translateZ(-100px);
+    filter: grayscale(1);
+    pointer-events: none;
+}
+
+.wheel-card.active-focus {
+    transform: scale(1.1) translateZ(50px);
+    box-shadow: 0 0 100px rgba(0, 212, 255, 0.2);
+    z-index: 10;
+}
+
+.wheel-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.step-num {
+    background: var(--primary);
+    width: 40px; height: 40px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: bold; font-size: 1.2rem;
+}
+
+.wheel-wrapper-large {
+    position: relative;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: #000;
+    border: 10px solid #1e293b;
+    box-shadow: 0 0 50px rgba(0,0,0,0.8), inset 0 0 30px rgba(0,0,0,0.5);
+    margin-bottom: 25px;
+    flex-shrink: 0;
+}
+
+.wheel-wrapper-large canvas { 
+    width: 100%; 
+    height: 100%; 
+    border-radius: 50%; 
+}
+
+.pointer-large {
+    position: absolute;
+    top: -30px; left: 50%;
+    transform: translateX(-50%);
+    width: 60px; height: 60px;
+    background: var(--accent);
+    clip-path: polygon(50% 100%, 0 0, 100% 0);
+    z-index: 20;
+    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5));
+}
+
+.spin-btn-large {
+    padding: 15px 50px;
+    font-family: 'SciFiLocal', sans-serif;
+    font-size: 1.8rem;
+    color: white;
+    background: rgba(255, 0, 122, 0.1); /* Полупрозрачный фон */
+    border: 2px solid var(--primary);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 0 20px rgba(255, 0, 122, 0.3),
+                inset 0 0 15px rgba(255, 0, 122, 0.2);
+    backdrop-filter: blur(5px);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Вторая кнопка (Крутить) может быть голубой для разнообразия */
+#spin-item-btn {
+    background: rgba(0, 212, 255, 0.1);
+    border-color: var(--secondary);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.3),
+                inset 0 0 15px rgba(0, 212, 255, 0.2);
+}
+
+.spin-btn-large:hover:not(:disabled) {
+    transform: translateY(-3px) scale(1.05);
+    background: rgba(255, 0, 122, 0.2);
+    box-shadow: 0 0 40px rgba(255, 0, 122, 0.6),
+                inset 0 0 20px rgba(255, 0, 122, 0.4);
+}
+
+#spin-item-btn:hover:not(:disabled) {
+    background: rgba(0, 212, 255, 0.2);
+    box-shadow: 0 0 40px rgba(0, 212, 255, 0.6),
+                inset 0 0 20px rgba(0, 212, 255, 0.4);
+}
+
+.spin-btn-large:active:not(:disabled) {
+    transform: translateY(1px) scale(0.98);
+}
+
+.spin-btn-large:disabled {
+    opacity: 0.3;
+    border-color: #555;
+    box-shadow: none;
+    cursor: not-allowed;
+}
+
+.result-text-large {
+    margin-top: 20px;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--accent);
+    min-height: 3.5rem;
+    text-shadow: 0 0 20px rgba(255, 204, 0, 0.4);
+}
+
+/* Nav & Common */
+.settings-icon {
+    position: fixed;
+    top: 20px; right: 20px;
+    font-size: 2rem;
+    text-decoration: none;
+    background: var(--glass);
+    width: 60px; height: 60px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    border: 1px solid var(--glass-border);
+    transition: 0.3s;
+    z-index: 100; /* Выше рамы корабля */
+}
+.settings-icon:hover { transform: rotate(90deg) scale(1.1); background: rgba(255,255,255,0.15); }
+
+.back-link {
+    color: var(--secondary);
+    text-decoration: none;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.container { max-width: 1000px; width: 100%; padding: 40px 20px; }
+.glass { background: var(--glass); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 30px; padding: 40px; }
+
+.admin-controls { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; margin-bottom: 40px; }
+.input-group { display: flex; gap: 10px; margin-top: 10px; }
+input, select { background: rgba(0,0,0,0.4); border: 1px solid var(--glass-border); padding: 12px; border-radius: 12px; color: white; flex: 1; }
+button { background: var(--secondary); border: none; border-radius: 12px; padding: 10px 20px; font-weight: bold; cursor: pointer; }
+
+.data-list { display: flex; flex-direction: column; gap: 20px; }
+.category-group { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 20px; }
+.category-header { display: flex; justify-content: space-between; color: var(--secondary); font-weight: bold; margin-bottom: 15px; }
+.item-chip { display: inline-flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.07); padding: 8px 16px; border-radius: 30px; margin: 0 10px 10px 0; }
+.delete-btn { color: #ff4444; cursor: pointer; }
+
+@media (max-width: 1200px) {
+    .wheel-display { flex-direction: column; gap: 60px; }
+    .wheel-wrapper-large { width: 350px; height: 350px; }
+}
