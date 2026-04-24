@@ -133,16 +133,26 @@ function drawWheel(canvas, labels) {
         ctx.shadowBlur = 0; // Убираем тень для текста, чтобы был четким
         ctx.translate(center, center);
         ctx.rotate(startAngle + sliceAngle / 2);
+        
+        // Адаптивный шрифт для длинных надписей
+        let fontSize = labels.length > 20 ? 12 : labels.length > 12 ? 16 : 22;
+        ctx.font = `900 ${fontSize}px sans-serif`;
+        
+        // Дополнительная проверка: если текст слишком длинный для радиуса, уменьшаем еще сильнее
+        const maxTextWidth = radius * 0.75; // Текст не должен занимать более 75% радиуса
+        let textWidth = ctx.measureText(label).width;
+        while (textWidth > maxTextWidth && fontSize > 8) {
+            fontSize -= 1;
+            ctx.font = `900 ${fontSize}px sans-serif`;
+            textWidth = ctx.measureText(label).width;
+        }
+
+        ctx.fillStyle = "white";
         ctx.textAlign = "right";
-        
-        const fontSize = Math.max(10, Math.min(22, 450 / labels.length));
-        ctx.font = `bold ${fontSize}px Arial`;
-        
         ctx.strokeStyle = "rgba(0,0,0,0.8)";
         ctx.lineWidth = 3;
-        ctx.strokeText(label, radius - 20, fontSize / 3);
-        ctx.fillStyle = "white";
-        ctx.fillText(label, radius - 20, fontSize / 3);
+        ctx.strokeText(label, radius - 20, 0); // Отступ 20px от края
+        ctx.fillText(label, radius - 20, 0); 
         ctx.restore();
     });
 }
