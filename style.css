@@ -96,6 +96,11 @@ body {
     margin-bottom: 30px;
     filter: drop-shadow(0 0 15px rgba(0, 212, 255, 0.9));
     letter-spacing: 4px;
+    text-align: center;
+}
+
+@media (max-width: 900px) {
+    /* Эти правила теперь в конце файла */
 }
 
 .wheel-display {
@@ -117,7 +122,12 @@ body {
     align-items: center;
     transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
     flex-shrink: 0;
-    min-width: 450px;
+    width: 450px;
+}
+
+@media (max-width: 600px) {
+    .wheel-card { width: 90vw; min-width: unset; padding: 20px; border-radius: 30px; }
+    .wheel-display { gap: 30px; }
 }
 
 .wheel-card.disabled {
@@ -159,6 +169,8 @@ body {
     margin-bottom: 25px;
     flex-shrink: 0;
 }
+
+/* Адаптивные размеры оберток теперь в конце файла */
 
 .wheel-wrapper-large canvas { 
     width: 100%; 
@@ -272,7 +284,54 @@ button { background: var(--secondary); border: none; border-radius: 12px; paddin
 .item-chip { display: inline-flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.07); padding: 8px 16px; border-radius: 30px; margin: 0 10px 10px 0; }
 .delete-btn { color: #ff4444; cursor: pointer; }
 
-@media (max-width: 1200px) {
-    .wheel-display { flex-direction: column; gap: 60px; }
+/* --- ЕДИНАЯ СЕКЦИЯ АДАПТИВНОСТИ --- */
+
+/* 1. ПЛАНШЕТЫ И УЗКИЕ ОКНА (901px - 1300px) */
+@media (max-width: 1300px) {
+    .wheel-display { flex-direction: column; align-items: center; gap: 50px; }
+    .game-header { margin-top: 80px; }
+    .game-header h1 { font-size: 3.5rem; text-align: center; }
     .wheel-wrapper-large { width: 350px; height: 350px; }
+}
+
+/* 2. МОБИЛЬНЫЕ УСТРОЙСТВА (до 900px) */
+@media (max-width: 900px) {
+    .game-header { 
+        margin-top: 110px; /* Спускаем заголовок ниже рамки */
+        margin-bottom: 20px; 
+    }
+    .game-header h1 { 
+        font-size: 2.2rem !important; /* Крупный, но уместный */
+        line-height: 1.1;
+        text-align: center;
+        display: block; 
+        width: 100%;
+        max-width: 300px; /* Чтобы слова гарантированно переносились */
+        margin: 0 auto;
+        letter-spacing: 1px !important;
+    }
+    .wheel-card { 
+        width: 90vw; 
+        min-width: unset; 
+        padding: 20px; 
+        border-radius: 30px; 
+    }
+    .wheel-wrapper-large { 
+        width: 280px; 
+        height: 280px; 
+        margin-bottom: 15px; 
+    }
+    .spin-btn-large { 
+        font-size: 1.4rem; 
+        padding: 12px 30px; 
+        width: 100%; 
+    }
+    .cockpit-window::before, .cockpit-window::after { 
+        top: 2vh; 
+        left: 2vh; 
+        right: 2vh; 
+        bottom: 2vh; 
+        border-radius: 40px; 
+    }
+    .result-text-large { font-size: 1.8rem; }
 }

@@ -1,5 +1,5 @@
 const DEFAULT_DATA = {
-    "YouTube": ["MrBeast", "Kaka 47", "A4", "SlivkiShow", "Kuplinov"],
+    "YouTube": ["Vitek Play", "Юджин", "Фиксай", "Компот", "EdisonPts", "Поззи"],
     "Видеоигры": [
         "Cities: Skylines II", "Mini Motorways", "Mini Metro", "Tiny Glade", 
         "Besiege", "Poly Bridge", "Euro Truck Simulator 2", "Satisfactory", 
@@ -9,8 +9,14 @@ const DEFAULT_DATA = {
         "Little Kitty Big City", "Plants vs. Zombies", "WorldBox", 
         "Minecraft", "Roblox", "Brawl Stars", "Terraria", "Among Us"
     ],
-    "Посмотреть": ["Гарри Поттер", "Гравити Фолз", "Звездные войны", "Мстители"],
-    "Творчество": ["Рисовать кота", "Лепить из глины", "Сделать оригами", "Pixel Art"]
+    "Посмотреть": [
+        "Adventure Time", "Stranger Things", "Гравити Фолз", "Наруто", 
+        "Человек-паук", "Мандалорец", "Уэнсдэй", "Гарри Поттер", "Мстители"
+    ],
+    "Творчество": [
+        "Рисовать линерами", "Рисовать гуашью", "Лепить из пластилина", 
+        "Поиграть на пианино", "Pixel Art", "Собрать LEGO"
+    ]
 };
 
 const savedData = localStorage.getItem('funCarouselData');
