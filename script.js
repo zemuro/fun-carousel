@@ -1,22 +1,76 @@
 const DEFAULT_DATA = {
-    "YouTube": ["Vitek Play", "Юджин", "Фиксай", "Компот", "EdisonPts", "Поззи"],
-    "Видеоигры": [
-        "Cities: Skylines II", "Mini Motorways", "Mini Metro", "Tiny Glade", 
-        "Besiege", "Poly Bridge", "Euro Truck Simulator 2", "Satisfactory", 
-        "Shapez 2", "Planet Coaster", "Kerbal Space Program", "SpaceEngine", 
-        "Universe Sandbox", "SPORE", "No Man's Sky", "Baba Is You", 
-        "Monument Valley", "Undertale", "Cuphead", "Geometry Dash", 
-        "Little Kitty Big City", "Plants vs. Zombies", "WorldBox", 
-        "Minecraft", "Roblox", "Brawl Stars", "Terraria", "Among Us"
-    ],
-    "Посмотреть": [
-        "Adventure Time", "Stranger Things", "Гравити Фолз", "Наруто", 
-        "Человек-паук", "Мандалорец", "Уэнсдэй", "Гарри Поттер", "Мстители"
-    ],
-    "Творчество": [
-        "Рисовать линерами", "Рисовать гуашью", "Лепить из пластилина", 
-        "Поиграть на пианино", "Pixel Art", "Собрать LEGO"
-    ]
+    "YouTube": [
+    "Vitek Play",
+    "Юджин",
+    "Фиксай",
+    "Компот",
+    "EdisonPts",
+    "Поззи"
+  ],
+  "Видеоигры": [
+    "Cities: Skylines II",
+    "Mini Motorways",
+    "Mini Metro",
+    "Tiny Glade",
+    "Besiege",
+    "Poly Bridge",
+    "Euro Truck Simulator 2",
+    "Satisfactory",
+    "Shapez 2",
+    "Planet Coaster",
+    "Kerbal Space Program",
+    "SpaceEngine",
+    "Universe Sandbox",
+    "SPORE",
+    "No Man's Sky",
+    "Baba Is You",
+    "Monument Valley",
+    "Undertale",
+    "Cuphead",
+    "Geometry Dash",
+    "Little Kitty Big City",
+    "Plants vs. Zombies",
+    "WorldBox",
+    "Minecraft",
+    "Roblox",
+    "Brawl Stars",
+    "Terraria",
+    "Among Us"
+  ],
+  "Посмотреть": [
+    "Adventure Time",
+    "Stranger Things",
+    "Гравити Фолз",
+    "Наруто",
+    "Человек-паук",
+    "Мандалорец",
+    "Уэнсдэй",
+    "Гарри Поттер",
+    "Мстители"
+  ],
+  "Творчество": [
+    "Рисовать линерами",
+    "Рисовать гуашью",
+    "Лепить из пластилина",
+    "Поиграть на пианино",
+    "Pixel Art",
+    "Собрать LEGO"
+  ],
+  "Занятия": [
+    "Погулять во дворе",
+    "Поиграть с котом",
+    "Прибрать на столе",
+    "Искупаться",
+    "Сходить в библиотеку",
+    "Написать другу"
+  ],
+  "Почитать": [
+    "Гарри Поттер",
+    "Станислав Лем",
+    "Дикий робот",
+    "Комиксы",
+    "Энциклопедию"
+  ]
 };
 
 const savedData = localStorage.getItem('funCarouselData');
